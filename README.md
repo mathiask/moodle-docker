@@ -150,5 +150,6 @@ The following Moodle customised docker images are close companions of this proje
 * [moodle-db-oracle](https://github.com/moodlehq/moodle-db-oracle): Oracle XE configured for Moodle
 
 ## Contributions
-
-Are extremely welcome!
+### XDebug
+You must build the XDebug enabled Docker image first (once):
+"cd" to docker and run "make" and you should be good to go.
