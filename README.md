@@ -48,7 +48,7 @@ bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 # [..]
 
 # Run behat tests
-bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
+bin/moodle-docker-compose exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
 Running single behat site:
 Moodle 3.4dev (Build: 20171006), 33a3ec7c9378e64c6f15c688a3c68a39114aa29d
 Php: 7.1.9, pgsql: 9.6.5, OS: Linux 4.9.49-moby x86_64
@@ -83,6 +83,9 @@ Time: 4.45 seconds, Memory: 38.00MB
 
 OK (2 tests, 7 assertions)
 ```
+
+Notes:
+* If you want to run test with coverage report, use command: `bin/moodle-docker-compose exec webserver phpdbg -qrr vendor/bin/phpunit --coverage-text auth_manual_testcase auth/manual/tests/manual_test.php`
 
 ## Use containers for manual testing
 
@@ -125,12 +128,12 @@ You can change the configuration of the docker images by setting various environ
 |-------------------------------------------|-----------|---------------------------------------|---------------|------------------------------------------------------------------------------|
 | `MOODLE_DOCKER_DB`                        | yes       | pgsql, mariadb, mysql, mssql, oracle  | none          | The database server to run against                                           |
 | `MOODLE_DOCKER_WWWROOT`                   | yes       | path on your file system              | none          | The path to the Moodle codebase you intend to test                           |
-| `MOODLE_DOCKER_PHP_VERSION`               | no        | 7.3, 7.2, 7.1, 7.0, 5.6                         | 7.1           | The php version to use                                                       |
+| `MOODLE_DOCKER_PHP_VERSION`               | no        | 7.4, 7.3, 7.2, 7.1, 7.0, 5.6          | 7.2           | The php version to use                                                       |
 | `MOODLE_DOCKER_BROWSER`                   | no        | firefox, chrome                       | firefox       | The browser to run Behat against                                             |
 | `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | no        | any value                             | not set       | If set, dependencies for memcached, redis, solr, and openldap are added      |
 | `MOODLE_DOCKER_WEB_HOST`                  | no        | any valid hostname                    | localhost     | The hostname for web                                |
-| `MOODLE_DOCKER_WEB_PORT`                  | no        | any integer value                     | 8000          | The port number for web. If set to 0, no port is used                        |
-| `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value                     | not set       | If set, the selenium node will expose a vnc session on the port specified    |
+| `MOODLE_DOCKER_WEB_PORT`                  | no        | any integer value (or bind_ip:integer)| 127.0.0.1:8000| The port number for web. If set to 0, no port is used.<br/>If you want to bind to any host IP different from the default 127.0.0.1, you can specify it with the bind_ip:port format (0.0.0.0 means bind to all) |
+| `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value (or bind_ip:integer)| not set       | If set, the selenium node will expose a vnc session on the port specified. Similar to MOODLE_DOCKER_WEB_PORT, you can optionally define the host IP to bind to. If you just set the port, VNC binds to 127.0.0.1 |
 
 ## Advanced usage
 
