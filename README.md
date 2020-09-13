@@ -27,7 +27,7 @@ export MOODLE_DOCKER_DB=pgsql
 # Ensure customized config.php for the Docker containers is in place
 cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 cp htaccess-template $MOODLE_DOCKER_WWWROOT/.htaccess
-# Ensure correct hostname for xdebug is correct in this file
+# Ensure correct hostname for xdebug in this file
 
 # Start up containers
 bin/moodle-docker-compose up -d
